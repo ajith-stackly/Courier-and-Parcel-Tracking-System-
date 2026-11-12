@@ -63,6 +63,7 @@ const DeliveryConfirmation = () => {
     }
 
     setSaving(true);
+    let statusSaved = false;
     try {
       const now = new Date().toISOString();
       const eventTimestamp = type === 'delivered' ? deliveryDate.toISOString() : now;
@@ -71,6 +72,12 @@ const DeliveryConfirmation = () => {
         status: newStatus,
         ...(type === 'delivered' ? { actualDeliveryDate: eventTimestamp } : {}),
       });
+      statusSaved = true;
+      setShipment(current => ({
+        ...current,
+        status: newStatus,
+        ...(type === 'delivered' ? { actualDeliveryDate: eventTimestamp } : {}),
+      }));
 
       await createTrackingEntry({
         shipmentId: parseInt(id),
@@ -106,7 +113,13 @@ const DeliveryConfirmation = () => {
       if (paymentChanged) await createShipmentNotifications(shipment, `Payment paid for shipment ${shipment.trackingNumber}`, user);
       toast.success(`Status updated: ${newStatus}`);
       navigate('/deliveries');
-    } catch { toast.error('Failed to update status'); }
+    } catch (error) {
+      console.error('Delivery update failed:', error);
+      const message = error?.response?.data?.message || error?.message;
+      toast.error(statusSaved
+        ? `Status saved as ${newStatus}, but a follow-up update failed${message ? `: ${message}` : ''}`
+        : `Failed to update status${message ? `: ${message}` : ''}`);
+    }
     finally { setSaving(false); }
   };
 

@@ -171,7 +171,7 @@ const CustomerList = () => {
                           <FiEye size={16} />
                         </Link>
                         <Link
-                          to={`/customers/${customer.id}/edit`}
+                          to={`/customers/edit/${customer.id}`}
                           className="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
                           title="Edit"
                         >

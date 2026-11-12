@@ -83,7 +83,7 @@ const AgentDetail = () => {
             <p className="text-sm text-gray-500 mt-1">Agent Details</p>
           </div>
         </div>
-        <Link to={`/agents/${id}/edit`} className="btn-primary flex items-center gap-2">
+        <Link to={`/agents/edit/${id}`} className="btn-primary flex items-center gap-2">
           <FiEdit2 size={16} />
           Edit Agent
         </Link>

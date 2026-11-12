@@ -53,7 +53,7 @@ const CustomerDetail = () => {
             <p className="text-sm text-gray-500 mt-1">Customer Details</p>
           </div>
         </div>
-        <Link to={`/customers/${id}/edit`} className="btn-primary flex items-center gap-2">
+        <Link to={`/customers/edit/${id}`} className="btn-primary flex items-center gap-2">
           <FiEdit2 size={16} />
           Edit Customer
         </Link>

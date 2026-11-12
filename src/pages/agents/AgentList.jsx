@@ -229,7 +229,7 @@ const AgentList = () => {
                           <FiEye size={16} />
                         </Link>
                         <Link
-                          to={`/agents/${agent.id}/edit`}
+                          to={`/agents/edit/${agent.id}`}
                           className="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
                           title="Edit"
                         >

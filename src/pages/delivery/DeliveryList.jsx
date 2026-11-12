@@ -104,7 +104,8 @@ const DeliveryList = () => {
                     <td className="py-3 px-4"><StatusBadge status={s.status} /></td>
                     <td className="py-3 px-4 hidden lg:table-cell text-gray-500">{formatDate(s.expectedDeliveryDate)}</td>
                     <td className="py-3 px-4 text-right">
-                      {['Agent Assigned', 'Out for Delivery'].includes(s.status) ? (
+                      {(['Accepted', 'Out for Delivery'].includes(s.status) ||
+                        (s.status === 'Agent Assigned' && user.role === 'delivery_agent')) ? (
                         <button onClick={() => navigate(`/deliveries/confirm/${s.id}`)}
                           className="btn-primary text-xs py-1 px-3">Update</button>
                       ) : (

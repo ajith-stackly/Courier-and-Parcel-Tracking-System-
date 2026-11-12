@@ -84,16 +84,14 @@
   ],
   "customers": [
     {
-      "id": 1,
-      "userId": 7,
       "name": "Anita Desai",
       "email": "customer1@example.com",
       "phone": "9000000007",
       "address": "12, MG Road, Indiranagar",
       "city": "Bangalore",
       "state": "Karnataka",
-      "pincode": "560038",
-      "createdAt": "2026-01-15T10:00:00Z"
+      "pincode": "560084",
+      "id": 1
     },
     {
       "id": 2,
@@ -288,14 +286,46 @@
     }
   ],
   "parcels": [
-    { "id": 1, "name": "Document", "description": "Letters, forms, and other paper documents" },
-    { "id": 2, "name": "Electronics", "description": "Electronic devices and accessories" },
-    { "id": 3, "name": "Clothing", "description": "Apparel and fabric items" },
-    { "id": 4, "name": "Food", "description": "Packaged food items" },
-    { "id": 5, "name": "Fragile", "description": "Items requiring careful handling" },
-    { "id": 6, "name": "Furniture", "description": "Furniture and large household items" },
-    { "id": 7, "name": "Medicine", "description": "Medicines and health products" },
-    { "id": 8, "name": "Other", "description": "Other parcel types" }
+    {
+      "id": 1,
+      "name": "Document",
+      "description": "Letters, forms, and other paper documents"
+    },
+    {
+      "id": 2,
+      "name": "Electronics",
+      "description": "Electronic devices and accessories"
+    },
+    {
+      "id": 3,
+      "name": "Clothing",
+      "description": "Apparel and fabric items"
+    },
+    {
+      "id": 4,
+      "name": "Food",
+      "description": "Packaged food items"
+    },
+    {
+      "id": 5,
+      "name": "Fragile",
+      "description": "Items requiring careful handling"
+    },
+    {
+      "id": 6,
+      "name": "Furniture",
+      "description": "Furniture and large household items"
+    },
+    {
+      "id": 7,
+      "name": "Medicine",
+      "description": "Medicines and health products"
+    },
+    {
+      "id": 8,
+      "name": "Other",
+      "description": "Other parcel types"
+    }
   ],
   "shipments": [
     {
@@ -352,7 +382,7 @@
       "width": 30,
       "height": 20,
       "deliveryType": "Standard",
-      "status": "In Transit",
+      "status": "Arrived at Destination",
       "currentBranchId": 4,
       "originBranchId": 2,
       "destinationBranchId": 3,
@@ -384,15 +414,16 @@
       "width": 25,
       "height": 10,
       "deliveryType": "Standard",
-      "status": "Out for Delivery",
+      "status": "Return Initiated",
       "currentBranchId": 4,
       "originBranchId": 1,
       "destinationBranchId": 4,
       "agentId": null,
       "expectedDeliveryDate": "2026-11-15",
-      "actualDeliveryDate": null,
+      "actualDeliveryDate": "2026-11-12T13:15:00.000Z",
       "deliveryCharge": 200,
-      "createdAt": "2026-11-08T09:00:00Z"
+      "createdAt": "2026-11-08T09:00:00Z",
+      "returnInProgress": true
     },
     {
       "id": 4,
@@ -1017,6 +1048,51 @@
       "updatedBy": "Admin User",
       "receiverName": "aj",
       "id": 36
+    },
+    {
+      "shipmentId": 3,
+      "trackingNumber": "CTK20260003",
+      "status": "Delivered",
+      "location": "23, FC Road, Pune",
+      "branchId": 4,
+      "remarks": "Customer collected within time",
+      "timestamp": "2026-11-12T13:15:00.000Z",
+      "updatedBy": "Rahul Sharma",
+      "receiverName": "Ajith",
+      "id": 37
+    },
+    {
+      "shipmentId": 3,
+      "trackingNumber": "CTK20260003",
+      "status": "Delivery Failed",
+      "location": "Pune",
+      "branchId": 4,
+      "remarks": "Customer not available",
+      "timestamp": "2026-11-12T13:16:08.121Z",
+      "updatedBy": "Rahul Sharma",
+      "id": 38
+    },
+    {
+      "shipmentId": 3,
+      "trackingNumber": "CTK20260003",
+      "status": "Return Initiated",
+      "location": "Mumbai West Hub",
+      "branchId": 4,
+      "remarks": "Return to sender initiated after failed delivery",
+      "timestamp": "2026-11-12T13:16:20.268Z",
+      "updatedBy": "Rahul Sharma",
+      "id": 39
+    },
+    {
+      "shipmentId": 2,
+      "trackingNumber": "CTK20260002",
+      "status": "Arrived at Destination",
+      "location": "Mumbai West Hub",
+      "branchId": 4,
+      "remarks": "Received at Mumbai West Hub",
+      "timestamp": "2026-11-12T13:36:25.534Z",
+      "updatedBy": "Admin User",
+      "id": 40
     }
   ],
   "payments": [
@@ -1050,7 +1126,7 @@
       "amount": 200,
       "date": "2026-11-08T09:00:00Z",
       "method": "Cash",
-      "status": "Pending",
+      "status": "Paid",
       "transactionRef": "TXN003"
     },
     {
@@ -1277,6 +1353,86 @@
       "type": "info",
       "read": true,
       "createdAt": "2026-11-12T07:00:00Z"
+    },
+    {
+      "userId": 2,
+      "message": "Shipment CTK20260003 delivered",
+      "type": "shipment_update",
+      "entityType": "shipment",
+      "entityId": 3,
+      "read": false,
+      "createdAt": "2026-11-12T13:15:37.421Z",
+      "id": 7
+    },
+    {
+      "userId": 7,
+      "message": "Shipment CTK20260003 delivered",
+      "type": "shipment_update",
+      "entityType": "shipment",
+      "entityId": 3,
+      "read": false,
+      "createdAt": "2026-11-12T13:15:37.421Z",
+      "id": 8
+    },
+    {
+      "userId": 2,
+      "message": "Shipment CTK20260003 delivery failed",
+      "type": "shipment_update",
+      "entityType": "shipment",
+      "entityId": 3,
+      "read": false,
+      "createdAt": "2026-11-12T13:16:08.232Z",
+      "id": 9
+    },
+    {
+      "userId": 7,
+      "message": "Shipment CTK20260003 delivery failed",
+      "type": "shipment_update",
+      "entityType": "shipment",
+      "entityId": 3,
+      "read": false,
+      "createdAt": "2026-11-12T13:16:08.232Z",
+      "id": 10
+    },
+    {
+      "userId": 2,
+      "message": "Shipment CTK20260003 status changed to Return Initiated",
+      "type": "shipment_update",
+      "entityType": "shipment",
+      "entityId": 3,
+      "read": false,
+      "createdAt": "2026-11-12T13:16:20.393Z",
+      "id": 11
+    },
+    {
+      "userId": 7,
+      "message": "Shipment CTK20260003 status changed to Return Initiated",
+      "type": "shipment_update",
+      "entityType": "shipment",
+      "entityId": 3,
+      "read": false,
+      "createdAt": "2026-11-12T13:16:20.393Z",
+      "id": 12
+    },
+    {
+      "userId": 1,
+      "message": "Shipment CTK20260002 received at Mumbai West Hub",
+      "type": "shipment_update",
+      "entityType": "shipment",
+      "entityId": 2,
+      "read": false,
+      "createdAt": "2026-11-12T13:36:25.660Z",
+      "id": 13
+    },
+    {
+      "userId": 8,
+      "message": "Shipment CTK20260002 received at Mumbai West Hub",
+      "type": "shipment_update",
+      "entityType": "shipment",
+      "entityId": 2,
+      "read": false,
+      "createdAt": "2026-11-12T13:36:25.660Z",
+      "id": 14
     }
   ],
   "activities": [
@@ -1351,6 +1507,42 @@
       "entityId": 9,
       "timestamp": "2026-11-12T07:37:16.951Z",
       "id": 8
+    },
+    {
+      "type": "delivery_update",
+      "message": "CTK20260003 → Delivered",
+      "userId": 2,
+      "entityType": "shipment",
+      "entityId": 3,
+      "timestamp": "2026-11-12T13:15:00.000Z",
+      "id": 9
+    },
+    {
+      "type": "delivery_update",
+      "message": "CTK20260003 → Delivery Failed",
+      "userId": 2,
+      "entityType": "shipment",
+      "entityId": 3,
+      "timestamp": "2026-11-12T13:16:08.121Z",
+      "id": 10
+    },
+    {
+      "type": "status_update",
+      "message": "CTK20260003 → Return Initiated",
+      "userId": 2,
+      "entityType": "shipment",
+      "entityId": 3,
+      "timestamp": "2026-11-12T13:16:20.268Z",
+      "id": 11
+    },
+    {
+      "type": "transfer_received",
+      "message": "CTK20260002 received at Mumbai West Hub",
+      "userId": 1,
+      "entityType": "shipment",
+      "entityId": 2,
+      "timestamp": "2026-11-12T13:36:25.534Z",
+      "id": 12
     }
   ],
   "transfers": [
@@ -1372,9 +1564,10 @@
       "fromBranchId": 2,
       "toBranchId": 4,
       "transferDate": "2026-11-11T06:00:00Z",
-      "status": "In Transit",
+      "status": "Completed",
       "remarks": "Via Mumbai hub",
-      "createdAt": "2026-11-11T06:00:00Z"
+      "createdAt": "2026-11-11T06:00:00Z",
+      "receivedAt": "2026-11-12T13:36:25.534Z"
     },
     {
       "id": 3,

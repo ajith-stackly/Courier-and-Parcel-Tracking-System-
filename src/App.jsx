@@ -123,7 +123,7 @@ function App() {
 
           {/* Delivery - Admin, Branch Staff & Delivery Agent */}
           <Route path="/deliveries" element={<ProtectedRoute roles={['admin', 'branch_staff', 'delivery_agent']}><DeliveryList /></ProtectedRoute>} />
-          <Route path="/deliveries/confirm/:id" element={<ProtectedRoute roles={['delivery_agent', 'branch_staff']}><DeliveryConfirmation /></ProtectedRoute>} />
+          <Route path="/deliveries/confirm/:id" element={<ProtectedRoute roles={['admin', 'branch_staff', 'delivery_agent']}><DeliveryConfirmation /></ProtectedRoute>} />
 
           {/* Payments - Admin & Branch Staff */}
           <Route path="/payments" element={<ProtectedRoute roles={['admin', 'branch_staff', 'customer']}><PaymentList /></ProtectedRoute>} />
