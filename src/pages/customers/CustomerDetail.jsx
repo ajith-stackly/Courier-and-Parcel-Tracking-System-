@@ -102,7 +102,6 @@ const CustomerDetail = () => {
         )}
       </div>
 
-      {/* Shipment History */}
       <div className="card overflow-hidden">
         <div className="p-6 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">

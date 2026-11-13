@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getPricingRule, createPricingRule, updatePricingRule } from '../../api/api';
+import { getPricingRule, createPricingRule, patchPricingRule } from '../../api/api';
 import { useToast } from '../../context/ToastContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { DELIVERY_TYPES } from '../../utils/constants';
@@ -95,7 +95,7 @@ const PricingForm = () => {
         description: form.description,
       };
       if (isEdit) {
-        await updatePricingRule(id, data);
+        await patchPricingRule(id, data);
         toast.success('Pricing rule updated');
       } else {
         await createPricingRule(data);

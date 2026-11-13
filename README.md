@@ -90,4 +90,7 @@ npm run build
 vercel deploy
 ```
 
+### Production API
+Set `VITE_API_BASE_URL` in the hosting provider to the publicly reachable API base URL before building/deploying. The local default (`http://localhost:3001`) only works on the developer's machine. Netlify/Vercel deploy the static frontend; they do not host this JSON Server or persist changes to `db.json`.
+
 > **Note**: For production, replace JSON Server with a real backend (Node.js/Express, Firebase, Supabase, etc.). JSON Server is for development only.

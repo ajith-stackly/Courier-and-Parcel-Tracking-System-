@@ -142,16 +142,15 @@
   ],
   "branches": [
     {
-      "id": 1,
       "name": "Bangalore Central Hub",
       "code": "BLR-001",
-      "address": "100, Industrial Area, Peenya",
-      "city": "Bangalore",
+      "address": "100, Industri",
+      "city": "Bangalore , Electronic city",
       "state": "Karnataka",
-      "contact": "0801234567",
+      "contact": "9801234567",
       "manager": "Rahul Sharma",
       "status": "active",
-      "createdAt": "2026-01-01T00:00:00Z"
+      "id": 1
     },
     {
       "id": 2,
@@ -166,16 +165,15 @@
       "createdAt": "2026-01-01T00:00:00Z"
     },
     {
-      "id": 3,
-      "name": "Chennai South Branch",
+      "name": "Chennai TN",
       "code": "CHN-001",
       "address": "55, T Nagar",
       "city": "Chennai",
       "state": "Tamil Nadu",
-      "contact": "0443456789",
+      "contact": "9443456789",
       "manager": "Sanjay Nair",
       "status": "active",
-      "createdAt": "2026-02-15T00:00:00Z"
+      "id": 3
     },
     {
       "id": 4,

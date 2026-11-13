@@ -17,6 +17,7 @@ export const getCustomers = () => api.get('/customers');
 export const getCustomer = (id) => api.get(`/customers/${id}`);
 export const createCustomer = (data) => api.post('/customers', data);
 export const updateCustomer = (id, data) => api.put(`/customers/${id}`, data);
+export const patchCustomer = (id, data) => api.patch(`/customers/${id}`, data);
 export const deleteCustomer = (id) => api.delete(`/customers/${id}`);
 
 // Branches
@@ -24,6 +25,7 @@ export const getBranches = () => api.get('/branches');
 export const getBranch = (id) => api.get(`/branches/${id}`);
 export const createBranch = (data) => api.post('/branches', data);
 export const updateBranch = (id, data) => api.put(`/branches/${id}`, data);
+export const patchBranch = (id, data) => api.patch(`/branches/${id}`, data);
 export const deleteBranch = (id) => api.delete(`/branches/${id}`);
 
 // Delivery Agents
@@ -62,12 +64,14 @@ export const getPaymentByShipment = (shipmentId) => api.get(`/payments?shipmentI
 export const getPaymentsByCustomer = (customerId) => api.get(`/payments?customerId=${customerId}`);
 export const createPayment = (data) => api.post('/payments', data);
 export const updatePayment = (id, data) => api.put(`/payments/${id}`, data);
+export const patchPayment = (id, data) => api.patch(`/payments/${id}`, data);
 
 // Pricing
 export const getPricing = () => api.get('/pricing');
 export const getPricingRule = (id) => api.get(`/pricing/${id}`);
 export const createPricingRule = (data) => api.post('/pricing', data);
 export const updatePricingRule = (id, data) => api.put(`/pricing/${id}`, data);
+export const patchPricingRule = (id, data) => api.patch(`/pricing/${id}`, data);
 export const deletePricingRule = (id) => api.delete(`/pricing/${id}`);
 
 // Transfers

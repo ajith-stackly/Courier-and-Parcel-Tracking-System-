@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getPayment, getPaymentByShipment, createPayment, updatePayment, getShipments } from '../../api/api';
+import { getPayment, getPaymentByShipment, createPayment, patchPayment, getShipments } from '../../api/api';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -79,7 +79,7 @@ const PaymentForm = () => {
       };
 
       if (isEdit) {
-        await updatePayment(id, paymentData);
+        await patchPayment(id, paymentData);
       } else {
         await createPayment(paymentData);
       }

@@ -100,9 +100,10 @@ const AgentForm = () => {
       return;
     }
 
+    let agentSaved = false;
     try {
       setSubmitting(true);
-      const agentsResponse = await getAgents();
+      const [agentsResponse, usersResponse] = await Promise.all([getAgents(), getUsers()]);
       const email = formData.email.trim().toLowerCase();
       const duplicateAgent = agentsResponse.data.some(agent =>
         String(agent.id) !== String(id) && agent.email?.trim().toLowerCase() === email
@@ -112,24 +113,49 @@ const AgentForm = () => {
         return;
       }
 
+      let currentAgent = null;
+      let linkedUser = null;
+      if (isEditMode) {
+        currentAgent = (await getAgent(id)).data;
+        linkedUser = usersResponse.data.find(user =>
+          currentAgent.userId != null && String(user.id) === String(currentAgent.userId)
+        ) || usersResponse.data.find(user =>
+          user.role === 'delivery_agent' && user.email?.trim().toLowerCase() === currentAgent.email?.trim().toLowerCase()
+        ) || null;
+      }
+
+      const duplicateUser = usersResponse.data.some(user =>
+        String(user.id) !== String(linkedUser?.id) && user.email?.trim().toLowerCase() === email
+      );
+      if (duplicateUser) {
+        toast.error('A user with this email already exists');
+        return;
+      }
+
       const agentData = { ...formData, email: formData.email.trim(), branchId: parseInt(formData.branchId, 10) };
       if (isEditMode) {
-        await updateAgent(id, agentData);
+        await updateAgent(id, {
+          ...agentData,
+          ...(linkedUser ? { userId: linkedUser.id } : {}),
+        });
+        agentSaved = true;
+        if (linkedUser) {
+          await updateUser(linkedUser.id, {
+            ...linkedUser,
+            name: agentData.name,
+            email: agentData.email,
+            phone: agentData.phone,
+            agentId: currentAgent.id,
+          });
+        }
         toast.success('Agent updated successfully');
       } else {
-        const usersResponse = await getUsers();
-        const duplicateUser = usersResponse.data.some(user => user.email?.trim().toLowerCase() === email);
-        if (duplicateUser) {
-          toast.error('An agent with this email already exists');
-          return;
-        }
-
         const userResponse = await createUser({
-          name: formData.name,
-          email: formData.email.trim(),
+          name: agentData.name,
+          email: agentData.email,
           password: initialPassword,
           role: 'delivery_agent',
-          phone: formData.phone,
+          phone: agentData.phone,
         });
         const agentResponse = await createAgent({
           ...agentData,
@@ -143,8 +169,11 @@ const AgentForm = () => {
         toast.success('Agent created successfully');
       }
       navigate('/agents');
-    } catch (err) {
-      toast.error(isEditMode ? 'Failed to update agent' : 'Failed to create agent');
+    } catch (error) {
+      console.error('Agent save failed:', error);
+      toast.error(agentSaved
+        ? 'Agent was saved, but the linked login account could not be updated'
+        : isEditMode ? 'Failed to update agent' : 'Failed to create agent');
     } finally {
       setSubmitting(false);
     }

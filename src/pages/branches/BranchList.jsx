@@ -72,21 +72,25 @@ const BranchList = () => {
       }
 
       const branchId = String(deleteModal.branch.id);
-      const hasActiveShipments = shipments.some(shipment =>
+      const activeShipments = shipments.filter(shipment =>
         !TERMINAL_SHIPMENT_STATUSES.includes(shipment.status) &&
         [shipment.currentBranchId, shipment.originBranchId, shipment.destinationBranchId]
           .some(referencedBranchId => String(referencedBranchId) === branchId)
       );
-      const hasActiveTransfers = transfers.some(transfer =>
+      const activeTransfers = transfers.filter(transfer =>
         !TERMINAL_TRANSFER_STATUSES.includes(transfer.status) &&
         [transfer.fromBranchId, transfer.toBranchId]
           .some(referencedBranchId => String(referencedBranchId) === branchId)
       );
-      const hasAssignedAgents = agents.some(agent =>
+      const assignedAgents = agents.filter(agent =>
         String(agent.branchId) === branchId && agent.availability === 'on_delivery'
       );
-      if (hasActiveShipments || hasActiveTransfers || hasAssignedAgents) {
-        toast.error('Cannot delete a branch with active shipments, transfers, or agent assignments');
+      const blockers = [];
+      if (activeShipments.length) blockers.push(`${activeShipments.length} active shipment${activeShipments.length === 1 ? '' : 's'}`);
+      if (activeTransfers.length) blockers.push(`${activeTransfers.length} active transfer${activeTransfers.length === 1 ? '' : 's'}`);
+      if (assignedAgents.length) blockers.push(`${assignedAgents.length} agent${assignedAgents.length === 1 ? '' : 's'} on delivery`);
+      if (blockers.length) {
+        toast.error(`Cannot delete ${deleteModal.branch.name}: ${blockers.join(', ')}. Resolve them first.`);
         return;
       }
 
@@ -94,8 +98,9 @@ const BranchList = () => {
       toast.success('Branch deleted successfully');
       setDeleteModal({ open: false, branch: null });
       fetchBranches();
-    } catch (err) {
-      toast.error('Failed to delete branch');
+    } catch (error) {
+      console.error('Branch deletion failed:', error);
+      toast.error(error?.response?.data?.message || 'Failed to delete branch');
     } finally {
       setDeleting(false);
     }
@@ -228,7 +233,7 @@ const BranchList = () => {
                           <FiEye size={16} />
                         </Link>
                         <Link
-                          to={`/branches/${branch.id}/edit`}
+                          to={`/branches/edit/${branch.id}`}
                           className="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
                           title="Edit"
                         >

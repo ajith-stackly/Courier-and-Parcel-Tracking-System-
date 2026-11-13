@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FiSave, FiArrowLeft } from 'react-icons/fi';
-import { getBranch, getBranches, createBranch, updateBranch } from '../../api/api';
+import { getBranch, getBranches, createBranch, patchBranch } from '../../api/api';
 import { useToast } from '../../context/ToastContext';
 import { validateForm } from '../../utils/validators';
 import { INDIAN_STATES } from '../../utils/constants';
@@ -99,7 +99,7 @@ const BranchForm = () => {
 
       const branchData = { ...formData, code: formData.code.trim() };
       if (isEditMode) {
-        await updateBranch(id, branchData);
+        await patchBranch(id, branchData);
         toast.success('Branch updated successfully');
       } else {
         await createBranch({ ...branchData, createdAt: new Date().toISOString() });

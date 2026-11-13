@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FiSave, FiArrowLeft } from 'react-icons/fi';
-import { getCustomer, getCustomers, getUsers, createUser, updateUser, createCustomer, updateCustomer } from '../../api/api';
+import { getCustomer, getCustomers, getUsers, createUser, updateUser, createCustomer, patchCustomer } from '../../api/api';
 import { useToast } from '../../context/ToastContext';
 import { validateForm } from '../../utils/validators';
 import { INDIAN_STATES } from '../../utils/constants';
@@ -94,9 +94,10 @@ const CustomerForm = () => {
       return;
     }
 
+    let customerSaved = false;
     try {
       setSubmitting(true);
-      const customersResponse = await getCustomers();
+      const [customersResponse, usersResponse] = await Promise.all([getCustomers(), getUsers()]);
       const email = formData.email.trim().toLowerCase();
       const duplicateCustomer = customersResponse.data.some(customer =>
         String(customer.id) !== String(id) && customer.email?.trim().toLowerCase() === email
@@ -106,27 +107,52 @@ const CustomerForm = () => {
         return;
       }
 
+      let currentCustomer = null;
+      let linkedUser = null;
       if (isEditMode) {
-        await updateCustomer(id, formData);
+        currentCustomer = (await getCustomer(id)).data;
+        linkedUser = usersResponse.data.find(user =>
+          currentCustomer.userId != null && String(user.id) === String(currentCustomer.userId)
+        ) || usersResponse.data.find(user =>
+          user.role === 'customer' && user.email?.trim().toLowerCase() === currentCustomer.email?.trim().toLowerCase()
+        ) || null;
+      }
+
+      const duplicateUser = usersResponse.data.some(user =>
+        String(user.id) !== String(linkedUser?.id) && user.email?.trim().toLowerCase() === email
+      );
+      if (duplicateUser) {
+        toast.error('A user with this email already exists');
+        return;
+      }
+
+      const customerData = { ...formData, email: formData.email.trim() };
+      if (isEditMode) {
+        await patchCustomer(id, {
+          ...customerData,
+          ...(linkedUser ? { userId: linkedUser.id } : {}),
+        });
+        customerSaved = true;
+        if (linkedUser) {
+          await updateUser(linkedUser.id, {
+            ...linkedUser,
+            name: customerData.name,
+            email: customerData.email,
+            phone: customerData.phone,
+            customerId: currentCustomer.id,
+          });
+        }
         toast.success('Customer updated successfully');
       } else {
-        const usersResponse = await getUsers();
-        const duplicateUser = usersResponse.data.some(user => user.email?.trim().toLowerCase() === email);
-        if (duplicateUser) {
-          toast.error('A customer with this email already exists');
-          return;
-        }
-
         const userResponse = await createUser({
-          name: formData.name,
-          email: formData.email.trim(),
+          name: customerData.name,
+          email: customerData.email,
           password: initialPassword,
           role: 'customer',
-          phone: formData.phone,
+          phone: customerData.phone,
         });
         const customerResponse = await createCustomer({
-          ...formData,
-          email: formData.email.trim(),
+          ...customerData,
           userId: userResponse.data.id,
           createdAt: new Date().toISOString(),
         });
@@ -138,7 +164,10 @@ const CustomerForm = () => {
       }
       navigate('/customers');
     } catch (err) {
-      toast.error(isEditMode ? 'Failed to update customer' : 'Failed to create customer');
+      console.error('Customer save failed:', err);
+      toast.error(customerSaved
+        ? 'Customer was saved, but the linked login account could not be updated'
+        : isEditMode ? 'Failed to update customer' : 'Failed to create customer');
     } finally {
       setSubmitting(false);
     }

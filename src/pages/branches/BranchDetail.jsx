@@ -55,7 +55,7 @@ const BranchDetail = () => {
             <p className="text-sm text-gray-500 mt-1">Branch Details</p>
           </div>
         </div>
-        <Link to={`/branches/${id}/edit`} className="btn-primary flex items-center gap-2">
+        <Link to={`/branches/edit/${id}`} className="btn-primary flex items-center gap-2">
           <FiEdit2 size={16} />
           Edit Branch
         </Link>
